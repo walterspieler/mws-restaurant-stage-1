@@ -41,7 +41,7 @@ a:focus {
 }
 
 a img {
-  border: none 0px #fff;
+  border: none 0 #fff;
 }
 
 h1,
@@ -78,6 +78,7 @@ section {
 }
 
 #footer {
+  display: flex;
   background-color: #444;
   color: #aaa;
   font-size: 8pt;
@@ -85,6 +86,14 @@ section {
   padding: 25px;
   text-align: center;
   text-transform: uppercase;
+}
+
+#footer div {
+  flex: 1;
+}
+
+#footer div:nth-child(2) {
+  flex: 2;
 }
 
 /* ====================== Navigation ====================== */
@@ -270,7 +279,6 @@ nav h1 a {
 
 .inside #footer {
   width: 100%;
-  display: flex;
 }
 
 #restaurant-name {
@@ -291,21 +299,23 @@ nav h1 a {
 }
 
 #restaurant-address {
-  font-size: 12pt;
-  margin: 10px 0px;
+  font-size: 1.25rem;
+  margin: 0.75rem 0;
+  text-align: center;
 }
 
 #restaurant-cuisine {
   background-color: #333;
   color: #ddd;
-  font-size: 12pt;
-  font-weight: 300;
+  font-size: 1rem;
+  font-weight: 100;
   letter-spacing: 10px;
   margin: 0 0 20px;
-  padding: 2px 0;
+  padding: 0.5rem 0;
   text-align: center;
   text-transform: uppercase;
   width: 100%;
+  border-radius: 5px;
 }
 
 #restaurant-container,
@@ -340,6 +350,7 @@ nav h1 a {
 
 #reviews-list li {
   display: flex;
+  align-content: flex-start;
   flex-wrap: wrap;
   background-color: #fff;
   border: 2px solid #f3f3f3;
@@ -356,11 +367,13 @@ nav h1 a {
   display: flex;
   width: 100%;
   padding: 1rem;
+  height: 3rem;
 }
 
 #reviews-list li .title-container p {
   color: white;
   margin: 0;
+  line-height: initial;
 }
 
 #reviews-list li .title-container p:nth-child(2) {
@@ -379,6 +392,7 @@ nav h1 a {
 #reviews-list .rating {
   padding: 0.25rem 1rem;
   margin: 1rem;
+  height: 2rem;
   width: auto;
   border-radius: 0.25rem;
   color: white;
@@ -391,6 +405,45 @@ nav h1 a {
   padding: 1rem;
 }
 
+#restaurant-infos-container {
+  flex: 1;
+}
+
+#restaurant-hours {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+}
+
+#restaurant-hours tr {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px dotted #ccc;
+  padding: 0.25rem;
+}
+
+#restaurant-hours tr:last-of-type {
+  border-bottom: none;
+}
+
 #restaurant-hours td {
   color: #666;
+  padding: 0.25rem 0;
+}
+
+#restaurant-hours td:last-of-type {
+  flex: 1;
+  text-align: right;
+  font-weight: 100;
+}
+
+/* Restaurant Table media queries */
+
+@media screen and (min-width: 500px) {
+  #restaurant-hours {
+    padding: 1rem;
+  }
+  #restaurant-hours tr {
+    flex-direction: row;
+  }
 }
