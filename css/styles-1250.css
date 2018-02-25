@@ -1,0 +1,13 @@
+/* ====================== Restaurant Listing ====================== */
+
+#restaurants-list {
+  max-width: 1300px;
+  margin: auto;
+}
+
+#restaurants-list li {
+  width: calc(25% - 1.5rem);
+  margin: 0.75rem;
+}
+
+/* ====================== Restaurant Details ====================== */

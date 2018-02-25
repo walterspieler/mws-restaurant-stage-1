@@ -195,6 +195,8 @@ nav h1 a {
   margin: 0;
   padding: 30px 15px;
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 #restaurants-list li {
@@ -332,6 +334,8 @@ nav h1 a {
 #reviews-list {
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 #reviews-list li {

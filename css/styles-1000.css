@@ -1,0 +1,41 @@
+/* ====================== Restaurant Listing ====================== */
+
+#restaurants-list li {
+  width: calc(33.33333% - 1.5rem);
+  margin: 0.75rem;
+}
+
+/* ====================== Restaurant Details ====================== */
+
+#reviews-list li {
+  width: calc(33.33333% - 1.5rem);
+  margin: 0.75rem;
+}
+
+#restaurant-img-container {
+  margin: 0 1.5rem;
+}
+
+#restaurant-container,
+#reviews-container {
+  flex-direction: row;
+}
+
+#restaurant-container h2 {
+  width: 100%;
+}
+
+/* ====================== Restaurant Filtering ====================== */
+
+.filter-options {
+  max-width: 100%;
+}
+
+.filter-options h2 {
+  width: 100%;
+}
+
+.filter-options select {
+  width: calc(50% - 1.5rem);
+  margin: 0.75rem;
+}
