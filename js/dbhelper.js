@@ -1,9 +1,19 @@
+import * as idb from 'idb';
+
 /**
  * Common database helper functions.
  */
 export class DBHelper {
-  constructor() {}
-
+  constructor() {
+    this.dbPromise = idb.open('mws-restaurants', 1, upgradeDB => {
+      switch (upgradeDB.oldVersion) {
+        case 0:
+        case 1:
+          const store = upgradeDB.createObjectStore('restaurants', { keyPath: 'id' });
+          store.createIndex('photos', 'photo');
+      }
+    });
+  }
   /**
    * Database URL.
    * Change this to restaurants.json file location on your server.
@@ -13,25 +23,50 @@ export class DBHelper {
     return `http://localhost:${port}/data/restaurants.json`;
   }
 
+  fetchRestaurantsFromIDB() {
+    return this.dbPromise.then(db => {
+      const tx = db.transaction('restaurants');
+      const restaurantsStore = tx.objectStore('restaurants');
+      return restaurantsStore.getAll();
+    });
+  }
+
+  fetchRestaurantByIdFromIDB(id) {
+    return this.dbPromise.then(db => {
+      const tx = db.transaction('restaurants');
+      const restaurantsStore = tx.objectStore('restaurants');
+      return restaurantsStore.get(id);
+    });
+  }
+
   /**
    * Fetch all restaurants.
    */
   fetchRestaurants(callback) {
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', this.DATABASE_URL);
-    xhr.onload = () => {
-      if (xhr.status === 200) {
-        // Got a success response from server!
-        const json = JSON.parse(xhr.responseText);
-        const restaurants = json.restaurants;
-        callback(null, restaurants);
-      } else {
-        // Oops!. Got an error from server.
-        const error = `Request failed. Returned status of ${xhr.status}`;
-        callback(error, null);
-      }
-    };
-    xhr.send();
+    console.log('Fetch restaurants');
+    fetch(this.DATABASE_URL)
+      .then(res => {
+        console.log(res);
+        return res.json();
+      })
+      .then(res => {
+        console.log(res);
+        res.restaurants.map(restaurant => {
+          this.dbPromise.then(db => {
+            var tx = db.transaction('restaurants', 'readwrite');
+            var store = tx.objectStore('restaurants');
+            store.put(restaurant);
+          });
+        });
+        callback(null, res.restaurants);
+      })
+      .catch(err => {
+        console.log(err);
+        // Fetch from indexedDB if exists
+        this.fetchRestaurantsFromIDB().then(restaurants => {
+          callback(null, restaurants);
+        });
+      });
   }
 
   /**
@@ -39,7 +74,7 @@ export class DBHelper {
    */
   fetchRestaurantById(id, callback) {
     // fetch all restaurants with proper error handling.
-    this.fetchRestaurants((error, restaurants) => {
+    this.fetchRestaurants(async (error, restaurants) => {
       if (error) {
         callback(error, null);
       } else {
@@ -48,7 +83,6 @@ export class DBHelper {
           // Got the restaurant
           callback(null, restaurant);
         } else {
-          // Restaurant does not exist in the database
           callback('Restaurant does not exist', null);
         }
       }
@@ -81,6 +115,7 @@ export class DBHelper {
         callback(error, null);
       } else {
         // Filter restaurants to have only given neighborhood
+        console.log(restaurants);
         const results = restaurants.filter(r => r.neighborhood == neighborhood);
         callback(null, results);
       }
@@ -120,6 +155,7 @@ export class DBHelper {
         callback(error, null);
       } else {
         // Get all neighborhoods from all restaurants
+        console.log(restaurants);
         const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood);
         // Remove duplicates from neighborhoods
         const uniqueNeighborhoods = neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i);
@@ -138,6 +174,7 @@ export class DBHelper {
         callback(error, null);
       } else {
         // Get all cuisines from all restaurants
+        console.log(restaurants);
         const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type);
         // Remove duplicates from cuisines
         const uniqueCuisines = cuisines.filter((v, i) => cuisines.indexOf(v) == i);

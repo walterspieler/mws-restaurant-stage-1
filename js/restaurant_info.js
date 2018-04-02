@@ -1,4 +1,6 @@
+import './common';
 import { DBHelper } from './dbhelper';
+
 let restaurant;
 var map;
 
@@ -8,53 +10,48 @@ const dBHelper = new DBHelper();
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
-  fetchRestaurantFromURL((error, restaurant) => {
-    if (error) {
-      // Got an error!
-      console.error(error);
-    } else {
+  fetchRestaurantFromURL()
+    .then(restaurant => {
       self.map = new google.maps.Map(document.getElementById('map'), {
         zoom: 16,
         center: restaurant.latlng,
         scrollwheel: false
       });
       fillBreadcrumb();
-      dBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
-    }
-  });
+      dBHelper.mapMarkerForRestaurant(restaurant, self.map);
+    })
+    .catch(err => console.log(err));
 };
 
 /**
  * Get current restaurant from page URL.
  */
-const fetchRestaurantFromURL = callback => {
-  if (self.restaurant) {
-    // restaurant already fetched!
-    callback(null, self.restaurant);
-    return;
-  }
-  const id = getParameterByName('id');
-  if (!id) {
-    // no id found in URL
-    error = 'No restaurant id in URL';
-    callback(error, null);
-  } else {
-    dBHelper.fetchRestaurantById(id, (error, restaurant) => {
-      self.restaurant = restaurant;
-      if (!restaurant) {
-        console.error(error);
-        return;
-      }
-      fillRestaurantHTML();
-      callback(null, restaurant);
-    });
-  }
+const fetchRestaurantFromURL = () => {
+  console.log('test');
+  return new Promise((resolve, reject) => {
+    const id = getParameterByName('id');
+    if (!id) {
+      // no id found in URL
+      error = 'No restaurant id in URL';
+      callback(error, null);
+    } else {
+      dBHelper.fetchRestaurantById(id, async (error, restaurant) => {
+        self.restaurant = restaurant;
+        if (!restaurant) {
+          reject(error);
+        }
+        await fillRestaurantHTML(restaurant);
+        resolve(restaurant);
+      });
+    }
+  });
 };
 
 /**
  * Create restaurant HTML and add it to the webpage
  */
-const fillRestaurantHTML = (restaurant = self.restaurant) => {
+const fillRestaurantHTML = restaurant => {
+  if (!restaurant) return;
   const name = document.getElementById('restaurant-name');
   name.innerHTML = restaurant.name;
 
@@ -74,7 +71,9 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
     fillRestaurantHoursHTML();
   }
   // fill reviews
+  console.log(1);
   fillReviewsHTML();
+  console.log(2);
 };
 
 /**
@@ -97,10 +96,12 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
   }
 };
 
+console.log('111');
 /**
  * Create all reviews HTML and add them to the webpage.
  */
 const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+  console.log(reviews);
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
   title.innerHTML = 'Reviews';

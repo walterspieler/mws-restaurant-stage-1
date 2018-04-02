@@ -1,4 +1,5 @@
 import { DBHelper } from './dbhelper';
+import './common';
 
 let dBHelper;
 
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', event => {
   dBHelper = new DBHelper();
   fetchNeighborhoods();
   fetchCuisines();
+  updateRestaurants();
 });
 
 /**
@@ -189,16 +191,3 @@ const addMarkersToMap = (restaurants = restaurants) => {
     markers.push(marker);
   });
 };
-
-/* Service Worker */
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker
-    .register('/js/sw/index.js')
-    .then(function() {
-      console.log('service worker registered');
-    })
-    .catch(function(err) {
-      console.log(err);
-    });
-}
