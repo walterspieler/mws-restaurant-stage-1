@@ -5,12 +5,23 @@ const commonsurlsToCache = [
   '/css/styles-640.css',
   '/css/styles-1000.css',
   '/css/styles-1250.css',
+  '/css/styles-1250.css',
+  '/build/1.jpg',
+  '/build/2.jpg',
+  '/build/3.jpg',
+  '/build/4.jpg',
+  '/build/5.jpg',
+  '/build/6.jpg',
+  '/build/7.jpg',
+  '/build/8.jpg',
+  '/build/9.jpg',
+  '/build/10.jpg',
   'https://fonts.googleapis.com/css?family=Roboto:100,400'
 ];
 const homeurlsToCache = ['/', '/build/main.bundle.js'];
 const infourlsToCache = ['restaurant.html', '/build/restaurantInfo.bundle.js'];
 
-self.addEventListener('install', function(event) {
+/*self.addEventListener('install', function(event) {
   console.log('Install Event: ', event);
   // Perform install steps
   event.waitUntil(
@@ -23,7 +34,7 @@ self.addEventListener('install', function(event) {
       return cache.addAll([...commonsurlsToCache, ...infourlsToCache]);
     })
   );
-});
+});*/
 
 self.addEventListener('fetch', function(event) {
   event.respondWith(

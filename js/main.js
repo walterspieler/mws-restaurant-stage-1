@@ -56,7 +56,7 @@ const fetchCuisines = () => {
   dBHelper.fetchCuisines((error, cuisines) => {
     if (error) {
       // Got an error!
-      console.error(error);
+      console.error('[fetchCuisines] ' + error);
     } else {
       cuisines = cuisines;
       fillCuisinesHTML(cuisines);
@@ -158,7 +158,7 @@ const createRestaurantHTML = restaurant => {
   image.alt = `${restaurant.name} preview picture`;
   li.append(image);
 
-  const name = document.createElement('h1');
+  const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
   li.append(name);
 

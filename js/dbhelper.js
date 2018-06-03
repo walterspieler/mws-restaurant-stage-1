@@ -5,10 +5,11 @@ import * as idb from 'idb';
  */
 export class DBHelper {
   constructor() {
-    this.dbPromise = idb.open('mws-restaurants', 1, upgradeDB => {
+    this.dbPromise = idb.open('mws-restaurants', 2, upgradeDB => {
       switch (upgradeDB.oldVersion) {
         case 0:
         case 1:
+        case 2:
           const store = upgradeDB.createObjectStore('restaurants', { keyPath: 'id' });
           store.createIndex('photos', 'photo');
       }
@@ -19,8 +20,8 @@ export class DBHelper {
    * Change this to restaurants.json file location on your server.
    */
   get DATABASE_URL() {
-    const port = 8000; // Change this to your server port
-    return `http://localhost:${port}/data/restaurants.json`;
+    const port = 1337; // Change this to your server port
+    http: return `http://localhost:${port}/restaurants`;
   }
 
   fetchRestaurantsFromIDB() {
@@ -51,14 +52,14 @@ export class DBHelper {
       })
       .then(res => {
         console.log(res);
-        res.restaurants.map(restaurant => {
+        res.map(restaurant => {
           this.dbPromise.then(db => {
             var tx = db.transaction('restaurants', 'readwrite');
             var store = tx.objectStore('restaurants');
             store.put(restaurant);
           });
         });
-        callback(null, res.restaurants);
+        callback(null, res);
       })
       .catch(err => {
         console.log(err);
@@ -169,6 +170,7 @@ export class DBHelper {
    */
   fetchCuisines(callback) {
     // Fetch all restaurants
+    console.log('[fetchCuisines] fetch Restaurants');
     this.fetchRestaurants((error, restaurants) => {
       if (error) {
         callback(error, null);
@@ -194,7 +196,8 @@ export class DBHelper {
    * Restaurant image URL.
    */
   imageUrlForRestaurant(restaurant) {
-    return `/img/${restaurant.photograph}`;
+    console.log('[imageUrlForRestaurant]', restaurant);
+    return `/build/${restaurant.photograph}.jpg`;
   }
 
   /**
