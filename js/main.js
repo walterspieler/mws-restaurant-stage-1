@@ -90,6 +90,9 @@ const initMap = () => {
     center: loc,
     scrollwheel: false
   });
+  google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
+    document.getElementById('map').style.height = '375px';
+  });
   updateRestaurants();
 };
 
@@ -108,15 +111,19 @@ const updateRestaurants = () => {
   const cuisine = cSelect[cIndex].value;
   const neighborhood = nSelect[nIndex].value;
 
-  dBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
-    if (error) {
-      // Got an error!
-      console.error(error);
-    } else {
-      resetRestaurants(restaurants);
-      fillRestaurantsHTML(restaurants);
+  dBHelper.fetchRestaurantByCuisineAndNeighborhood(
+    cuisine,
+    neighborhood,
+    (error, restaurants) => {
+      if (error) {
+        // Got an error!
+        console.error(error);
+      } else {
+        resetRestaurants(restaurants);
+        fillRestaurantsHTML(restaurants);
+      }
     }
-  });
+  );
 };
 window.updateRestaurants = updateRestaurants;
 
@@ -143,6 +150,14 @@ const fillRestaurantsHTML = (restaurants = restaurants) => {
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
   });
+  /* Images lazy-loads*/
+  [].forEach.call(document.querySelectorAll('img[data-src]'), function(img) {
+    console.log('[img]', img);
+    img.setAttribute('src', img.getAttribute('data-src'));
+    img.onload = function() {
+      img.removeAttribute('data-src');
+    };
+  });
   addMarkersToMap(restaurants);
 };
 
@@ -154,8 +169,9 @@ const createRestaurantHTML = restaurant => {
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
-  image.src = dBHelper.imageUrlForRestaurant(restaurant);
+  image.setAttribute('data-src', dBHelper.imageUrlForRestaurant(restaurant));
   image.alt = `${restaurant.name} preview picture`;
+  console.log(image);
   li.append(image);
 
   const name = document.createElement('h2');

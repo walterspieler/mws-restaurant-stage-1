@@ -19,13 +19,15 @@
 <body>
   <header>
     <nav>
-      <h1><a href="/">Restaurant Reviews</a></h1>
+      <h1>
+        <a href="/">Restaurant Reviews</a>
+      </h1>
     </nav>
   </header>
 
   <main id="maincontent">
     <section id="map-container">
-      <div id="map"></div>
+      <div id="map" role="application"></div>
     </section>
     <section>
       <div class="filter-options">
@@ -40,16 +42,20 @@
       <ul id="restaurants-list"></ul>
     </section>
   </main>
-  <script type="application/javascript" charset="utf-8" src="build/main.bundle.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD02veSPnLTOBs1KFHYPMtbHtR_wJCRJEY&libraries=places&callback=initMap"></script>
+
 
 
   <footer id="footer">
     <div>Copyright (c) 2017</div>
-    <div><a href="/"><strong>Restaurant Reviews</strong></a></div>
+    <div>
+      <a href="/">
+        <strong>Restaurant Reviews</strong>
+      </a>
+    </div>
     <div>All Rights Reserved.</div>
   </footer>
-
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD02veSPnLTOBs1KFHYPMtbHtR_wJCRJEY&libraries=places&callback=initMap"></script>
+  <script type="application/javascript" charset="utf-8" src="build/main.bundle.js"></script>
 </body>
 
 </html>

@@ -5,6 +5,15 @@
   box-sizing: border-box;
 }
 
+img {
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+img[data-src] {
+  opacity: 0;
+}
+
 body,
 td,
 th,
@@ -135,10 +144,10 @@ nav h1 a {
 
 /* Add a slash symbol (/) before/behind each list item */
 
-#breadcrumb li+li:before {
+#breadcrumb li + li:before {
   padding: 8px;
   color: black;
-  content: "/\00a0";
+  content: '/\00a0';
 }
 
 /* Add a color to all links inside the list */
@@ -158,9 +167,10 @@ nav h1 a {
 /* ====================== Map ====================== */
 
 #map {
-  height: 400px;
   width: 100%;
+  height: 0;
   background-color: #01447e;
+  transition: height 0.5s ease-in-out;
 }
 
 /* ====================== Restaurant Filtering ====================== */

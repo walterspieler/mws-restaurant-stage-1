@@ -1,11 +1,10 @@
 const path = require('path');
 const webpack = require('webpack');
-const CompressionPlugin = require("compression-webpack-plugin");
+const CompressionPlugin = require('compression-webpack-plugin');
 const cpoptions = { cache: true, algorithm: 'gzip' };
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const imageminMozjpeg = require('imagemin-mozjpeg');
-
 
 const main = {
   entry: './js/main.js',
@@ -14,7 +13,8 @@ const main = {
     filename: 'main.bundle.js'
   },
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader'
@@ -27,9 +27,11 @@ const main = {
   },
   plugins: [
     new CompressionPlugin({ ...cpoptions }),
-    new CopyWebpackPlugin([{
-      from: 'img/'
-    }]),
+    new CopyWebpackPlugin([
+      {
+        from: 'img/'
+      }
+    ]),
     new ImageminPlugin({
       plugins: [
         imageminMozjpeg({
@@ -57,7 +59,8 @@ const restaurantInfo = {
     filename: 'restaurantInfo.bundle.js'
   },
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader'
@@ -73,9 +76,11 @@ const restaurantInfo = {
   },
   plugins: [
     new CompressionPlugin({ ...cpoptions }),
-    new CopyWebpackPlugin([{
-      from: 'img/'
-    }]),
+    new CopyWebpackPlugin([
+      {
+        from: 'img/'
+      }
+    ]),
     new ImageminPlugin({
       plugins: [
         imageminMozjpeg({
