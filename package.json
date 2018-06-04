@@ -1,7 +1,8 @@
 {
   "name": "mws-restaurant-stage-1",
   "version": "1.0.0",
-  "description": "--- #### _Three Stage Course Material Project - Restaurant Reviews_",
+  "description":
+    "--- #### _Three Stage Course Material Project - Restaurant Reviews_",
   "main": "index.html",
   "dependencies": {
     "idb": "^2.1.0"
@@ -17,11 +18,13 @@
     "imagemin-webpack-plugin": "^2.1.5",
     "style-loader": "^0.21.0",
     "webpack": "^4.0.1",
-    "webpack-cli": "^2.0.10"
+    "webpack-cli": "^2.0.10",
+    "http-server": "^0.11.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack -w --mode development"
+    "start:dev": "webpack -w --mode development",
+    "start": "webpack; http-server . -a localhost -c-1 -o"
   },
   "repository": {
     "type": "git",
