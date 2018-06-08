@@ -18,11 +18,11 @@
 
 #restaurant-container,
 #reviews-container {
-  flex-direction: row;
+  flex-direction: column;
 }
 
 #restaurant-container h2 {
-  width: 100%;
+  flex: 1;
 }
 
 /* ====================== Restaurant Filtering ====================== */

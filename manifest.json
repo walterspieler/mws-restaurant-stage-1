@@ -1,12 +1,13 @@
 {
-  "short_name": "Restaurant reviews",
+  "short_name": "Rstrnt Rvws",
   "name": "Restaurant reviews",
   "start_url": "/",
   "background_color": "#ffffff",
   "display": "standalone",
   "scope": "/",
   "theme_color": "#3397DB",
-  "icons": [{
+  "icons": [
+    {
       "src": "/assets/icons-192.png",
       "type": "image/png",
       "sizes": "192x192"

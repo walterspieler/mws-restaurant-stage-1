@@ -70,16 +70,38 @@ const fillRestaurantHTML = restaurant => {
   if (restaurant.operating_hours) {
     fillRestaurantHoursHTML();
   }
+  //Favourite or not ??
+  if (restaurant.is_favorite) {
+    document.getElementById('favToggle').checked = true;
+  }
   // fill reviews
-  console.log(1);
-  fillReviewsHTML();
-  console.log(2);
+  getReviewsByRestaurant(restaurant.id).then(reviews => {
+    fillReviewsHTML(reviews);
+  });
+};
+
+const getReviewsByRestaurant = id => {
+  return new Promise((res, rej) => {
+    fetch(`http://localhost:1337/reviews/?restaurant_id=${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(reviews => res(reviews.json()))
+      .catch(error => {
+        console.error('Error:', error);
+        rej(error);
+      });
+  });
 };
 
 /**
  * Create restaurant operating hours HTML table and add it to the webpage.
  */
-const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => {
+const fillRestaurantHoursHTML = (
+  operatingHours = self.restaurant.operating_hours
+) => {
   const hours = document.getElementById('restaurant-hours');
   for (let key in operatingHours) {
     const row = document.createElement('tr');
@@ -96,12 +118,10 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
   }
 };
 
-console.log('111');
 /**
  * Create all reviews HTML and add them to the webpage.
  */
 const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
-  console.log(reviews);
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
   title.innerHTML = 'Reviews';
@@ -133,7 +153,7 @@ const createReviewHTML = review => {
   tcontainer.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = review.date;
+  date.innerHTML = new Date(review.createdAt).toDateString();
   tcontainer.appendChild(date);
 
   li.appendChild(tcontainer);
@@ -173,3 +193,69 @@ const getParameterByName = (name, url) => {
   if (!results[2]) return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 };
+
+document.querySelector('#form-reviews').addEventListener('submit', e => {
+  e.preventDefault(); //stop form from submitting
+  const form = document.getElementById('form-reviews');
+  let invalid = false;
+  form.elements['submit'].disabled = true;
+  form.elements['submit'].value = 'Ajout du commentaire en cours';
+  Array.from(document.querySelectorAll('#register input:required')).forEach(
+    field => {
+      field.className = 'required_empty';
+      invalid = true;
+    }
+  );
+  if (invalid) {
+    form.elements['submit'].disabled = false;
+    form.elements['submit'].value = 'Rate!';
+    return;
+  }
+  fetch('http://localhost:1337/reviews/', {
+    method: 'POST',
+    body: JSON.stringify({
+      restaurant_id: getParameterByName('id'),
+      name:
+        form.elements['firstname'].value +
+        ' ' +
+        form.elements['lastname'].value,
+      rating: form.elements['rating'].value,
+      comments: form.elements['review'].value
+    }),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => response.json())
+    .then(review => {
+      const ul = document.getElementById('reviews-list');
+      ul.appendChild(createReviewHTML(review));
+      form.reset();
+      form.elements['submit'].disabled = false;
+      form.elements['submit'].value = 'Rate!';
+    })
+    .catch(err => console.error(err));
+});
+
+const toggleFav = e => {
+  e.preventDefault();
+  const button = document.getElementById('favToggle');
+  const id = getParameterByName('id');
+  fetch(
+    `http://localhost:1337/restaurants/${id}/?is_favorite=${!button.checked}`,
+    {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }
+  )
+    .then(response => response.json())
+    .then(review => {
+      button.checked = !button.checked;
+    })
+    .catch(err => console.error(err));
+};
+document.getElementById('favToggle').onclick = toggleFav;

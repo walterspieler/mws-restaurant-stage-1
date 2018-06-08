@@ -339,8 +339,49 @@ nav h1 a {
   flex-direction: column;
 }
 
-#reviews-container {
+#reviews-container,
+#form-reviews-container {
   padding: 30px 20px;
+}
+
+#form-reviews-container label {
+  font-size: 1rem;
+  color: #555;
+  font-weight: 100;
+  line-height: normal;
+  margin: 0px;
+}
+
+#form-reviews-container input,
+#form-reviews-container textarea {
+  border: 0px solid;
+  border-bottom: 1px solid #ccc;
+  padding: 0.5rem;
+  width: 100%;
+  margin: 1rem 0;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+#form-reviews-container input.required_empty {
+  border-bottom: 1px solid red;
+}
+
+#form-reviews-container input[type='submit'] {
+  background: #8a4b00;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1rem;
+  border-bottom: 3px solid orange;
+}
+
+#form-reviews-container select {
+  width: 100%;
+  height: 2rem;
+  border: 0;
+  border-bottom: 1px solid #ccc;
+  margin: 1rem 0;
+  border-radius: 0px;
 }
 
 #reviews-container h2 {
@@ -447,6 +488,24 @@ nav h1 a {
   font-weight: 100;
 }
 
+.restaurant-title-container {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.fav-check {
+  display: flex;
+  background: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid #ccc;
+}
+
+.fav-check .title {
+  line-height: 2.1;
+  margin-right: 2rem;
+}
+
 /* Restaurant Table media queries */
 
 @media screen and (min-width: 500px) {
@@ -456,4 +515,56 @@ nav h1 a {
   #restaurant-hours tr {
     flex-direction: row;
   }
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  display: none;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: '';
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: orange;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px orange;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
 }

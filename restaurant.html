@@ -28,7 +28,7 @@
       </h1>
     </nav>
     <!-- Beginning breadcrumb -->
-    <ul id="breadcrumb" role=”navigation”>
+    <ul id="breadcrumb" role="navigation">
       <li>
         <a href="/">Home</a>
       </li>
@@ -41,13 +41,22 @@
   <!-- Beginning main -->
   <main id="maincontent">
     <!-- Beginning map -->
-    <section id="map-container">
+    <!--<section id="map-container">
       <div role="application" id="map"></div>
-    </section>
+    </section>-->
     <!-- End map -->
     <!-- Beginning restaurant -->
     <section id="restaurant-container">
-      <h2 id="restaurant-name"></h2>
+      <div class="restaurant-title-container">
+        <h2 id="restaurant-name"></h2>
+        <form class="fav-check" id="fav-check">
+          <span class="title">Favourite ?</span>
+          <label class="switch">
+            <input type="checkbox" id="favToggle">
+            <span class="slider"></span>
+          </label>
+        </form>
+      </div>
       <div id="restaurant-img-container">
         <img id="restaurant-img">
         <p id="restaurant-cuisine"></p>
@@ -63,6 +72,27 @@
       <ul id="reviews-list"></ul>
     </section>
     <!-- End reviews -->
+    <!-- Beginning reviews form -->
+    <section id="form-reviews-container">
+      <form id="form-reviews">
+        <label for="firstname">First name</label>
+        <input type="text" name="firstname" id="firstname" required>
+        <label for="lastname">Last name</label>
+        <input type="text" name="lastname" id="lastname" required>
+        <label for="rating">Rating</label>
+        <select name="rating" id="rating">
+          <option value="1">1/5 No comment!</option>
+          <option value="2">2/5 OK...</option>
+          <option value="3">3/5 Good...</option>
+          <option value="4">4/5 Very good!</option>
+          <option value="5">5/5 Very very good!</option>
+        </select>
+        <label for="review">Review</label>
+        <textarea name="review" rows="4" required id="review"></textarea>
+        <input type="submit" value="Rate!" name="submit">
+      </form>
+    </section>
+    <!-- End reviews form -->
   </main>
   <!-- End main -->
 
