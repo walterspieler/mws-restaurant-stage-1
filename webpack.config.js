@@ -35,7 +35,7 @@ const main = {
     new ImageminPlugin({
       plugins: [
         imageminMozjpeg({
-          quality: 50,
+          quality: 45,
           progressive: true
         })
       ],
@@ -84,7 +84,7 @@ const restaurantInfo = {
     new ImageminPlugin({
       plugins: [
         imageminMozjpeg({
-          quality: 50,
+          quality: 45,
           progressive: true
         })
       ],

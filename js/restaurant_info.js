@@ -27,7 +27,6 @@ window.initMap = () => {
  * Get current restaurant from page URL.
  */
 const fetchRestaurantFromURL = () => {
-  console.log('test');
   return new Promise((resolve, reject) => {
     const id = getParameterByName('id');
     if (!id) {
@@ -256,6 +255,48 @@ const toggleFav = e => {
     .then(review => {
       button.checked = !button.checked;
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+      console.error(err);
+      dBHelper.storeFav(id, !button.checked);
+      button.checked = !button.checked;
+    });
 };
 document.getElementById('favToggle').onclick = toggleFav;
+
+const showMap = () => {
+  if (document.getElementById('map-show').innerHTML === 'Hide Map') {
+    document.getElementById('map-show').innerHTML = 'Show Map';
+    document.getElementById('map-container').style.height = '0';
+    return;
+  }
+  document.getElementById('map').style.display = 'block';
+  document.getElementById('map-container').style.height = '300px';
+  document.getElementById('map-show').innerHTML = 'Hide Map';
+};
+
+document.getElementById('map-show').addEventListener('click', showMap);
+
+window.addEventListener('online', () => {
+  console.log('online');
+  dBHelper.getFav(getParameterByName('id')).then(fav => {
+    fetch(
+      `http://localhost:1337/restaurants/${Number(fav.id)}/?is_favorite=${
+        fav.favourite
+      }`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+      .then(response => response.json())
+      .then()
+      .catch(err => {
+        console.error(err);
+        dBHelper.storeFav(id, !button.checked);
+        button.checked = !button.checked;
+      });
+  });
+});

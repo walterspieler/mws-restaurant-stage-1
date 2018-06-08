@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', event => {
  */
 const fetchNeighborhoods = () => {
   dBHelper.fetchNeighborhoods((error, neighborhoods) => {
-    console.log(neighborhoods);
     if (error) {
       // Got an error
       console.error(error);
@@ -40,7 +39,6 @@ const fetchNeighborhoods = () => {
  */
 const fillNeighborhoodsHTML = (neighborhoods = neighborhoods) => {
   const select = document.getElementById('neighborhoods-select');
-  console.log(neighborhoods);
   neighborhoods.forEach(neighborhood => {
     const option = document.createElement('option');
     option.innerHTML = neighborhood;
@@ -152,7 +150,6 @@ const fillRestaurantsHTML = (restaurants = restaurants) => {
   });
   /* Images lazy-loads*/
   [].forEach.call(document.querySelectorAll('img[data-src]'), function(img) {
-    console.log('[img]', img);
     img.setAttribute('src', img.getAttribute('data-src'));
     img.onload = function() {
       img.removeAttribute('data-src');
@@ -171,7 +168,6 @@ const createRestaurantHTML = restaurant => {
   image.className = 'restaurant-img';
   image.setAttribute('data-src', dBHelper.imageUrlForRestaurant(restaurant));
   image.alt = `${restaurant.name} preview picture`;
-  console.log(image);
   li.append(image);
 
   const name = document.createElement('h2');
